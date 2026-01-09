@@ -1,0 +1,69 @@
+﻿@inject IJSRuntime JSRuntime
+@using WebsiteWASM.Pages.Desktop.Components;
+
+<div class="window">
+    <!--Window Title-->
+    <WindowTitle Title="Terminal"/>
+
+    <!--Terminal Text-->
+    <div style="display: flex; flex-direction: column; height: 100%">
+        <div style="flex-grow: 1">
+            <textarea 
+                @ref="terminalOutput"
+                class="terminal-text"
+                @bind="terminalText"
+                disabled="disabled"
+                style="margin-bottom: 0"/>
+        </div>
+
+        <div class="input-line">
+            <p class="terminal-prefix">@terminalPrefix</p>
+
+            <textarea
+                class="terminal-text"
+                rows="1"
+                @ref="commandInput"
+                @bind="inputValue"
+                @bind:event="oninput"
+                @onkeydown="@InputChanged"/>
+        </div>
+    </div>
+</div>
+@code {
+    private string terminalPrefix = "admin@swizz-server: $ ";
+    private string inputValue { get; set; } = string.Empty;
+    private string terminalText { get; set; } = string.Empty;
+
+    private ElementReference commandInput;
+    private ElementReference terminalOutput;
+
+    private async Task InputChanged(KeyboardEventArgs e) {
+        if (e.Key == "Enter")
+        {
+            terminalText += terminalPrefix + inputValue.Replace("\n", "") + "\n";
+            await JSRuntime.InvokeVoidAsync("terminalInterop.clearAndFocus", commandInput, terminalOutput);
+            inputValue = string.Empty;
+
+            StateHasChanged();
+        }
+    }
+}
+
+<script>
+    window.terminalInterop = {
+        clearAndFocus: function (commandInputElement, terminalOutput) {
+            try {
+                if (!commandInputElement) return;
+                commandInputElement.value = '';
+                commandInputElement.focus();
+                if (commandInputElement.setSelectionRange) {
+                    commandInputElement.setSelectionRange(0, 0);
+                }
+
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
+</script>

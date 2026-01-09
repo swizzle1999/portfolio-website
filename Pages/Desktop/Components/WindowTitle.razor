@@ -1,0 +1,26 @@
+﻿@inject IJSRuntime JSRuntime
+@inject WebsiteWASM.Services.UIEventService UIEventService
+
+<div class="window-title container">
+    <div class="row">
+        <div class="col">
+        </div>
+
+        <div class="col" style="text-align: center">
+            <p>@Title</p>
+        </div>
+
+        <div class="col">
+            <p @onclick="CloseButtonClicked" class="ms-auto" style="font-weight: bold; padding-right: 10px; cursor: pointer; width: fit-content">X</p>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    private void CloseButtonClicked() {
+        UIEventService.RequestTerminalClose(this, EventArgs.Empty);
+    }
+        
+}

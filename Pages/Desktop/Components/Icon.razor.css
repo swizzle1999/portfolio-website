@@ -1,0 +1,14 @@
+﻿.icon {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    height: auto;
+    width: 100px;
+    cursor: pointer;
+}
+
+.icon-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}

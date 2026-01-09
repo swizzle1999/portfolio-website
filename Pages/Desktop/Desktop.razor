@@ -1,0 +1,50 @@
+﻿@page "/"
+@inject WebsiteWASM.Services.UIEventService UIEventService
+@using WebsiteWASM.Pages.Desktop.Components;
+
+<div class="container" style="margin: 0">
+    <div class="col-2">
+        <Icon Href="https://github.com/swizzle1999" Text="Github" ImgSrc="images/github.png" />
+    </div>
+
+    <div class="col-2">
+        <Icon Href="" Text="LinkedIn" ImgSrc="images/linkedin.png" />
+    </div>
+
+    <div class="col-2">
+        <Icon Href="https://www.youtube.com/swizzle1999" Text="YouTube" ImgSrc="images/youtube.png" />
+    </div>
+    <div class="col-2">
+        <Icon Href="" Text="Files" ImgSrc="images/folder.png" />
+    </div>
+
+    <div class="col-2">
+        <Icon OnClickCallback="TerminalClicked" Text="Terminal" ImgSrc="images/terminal.png" />
+    </div>
+</div>
+
+@if (IsTerminalVisible) {
+<div class="d-flex">
+    <TerminalWindow />
+</div>
+}
+
+@code {
+    private bool IsTerminalVisible { get; set; } = false;
+
+    protected override void OnInitialized() {
+        UIEventService.TerminalCloseRequested += async (object? sender, EventArgs e) => {
+            IsTerminalVisible = false;
+            await InvokeAsync(() => {
+                StateHasChanged();
+            });
+        };
+
+        base.OnInitialized();
+    }
+
+    private void TerminalClicked()
+    {
+        IsTerminalVisible = !IsTerminalVisible;
+    }
+}
