@@ -1,8 +1,9 @@
 ﻿@inject IJSRuntime JSRuntime
 @using WebsiteWASM.Pages.Desktop.Components;
 @inject WebsiteWASM.Services.UIEventService UIEventService
+@implements IWindow
 
-<div class="window">
+<div class="window" style="@StyleForWindow">
     <div class="row window-title">
         <div class="col">
         </div>
@@ -12,7 +13,7 @@
         </div>
 
         <div class="col">
-            <p @onclick="CloseButtonClicked" class="ms-auto" style="font-weight: bold; padding-right: 10px; cursor: pointer; width: fit-content">X</p>
+            <p @onclick="OnCloseButtonClicked" class="ms-auto" style="font-weight: bold; padding-right: 10px; cursor: pointer; width: fit-content">X</p>
         </div>
     </div>
    
@@ -27,7 +28,31 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private void CloseButtonClicked() {
-        UIEventService.RequestTerminalClose(this, EventArgs.Empty);
+    private bool IsVisible { get; set; } = false;
+
+    IWindow IWindow.Window => this;
+
+    public void Show() {
+        UpdateVisibility(true);
     }
+
+    public void Hide() {
+        UpdateVisibility(false);
+    }
+
+    public void Toggle() {
+        UpdateVisibility(!IsVisible);
+    }
+
+    private void OnCloseButtonClicked() {
+        UpdateVisibility(false);
+    }
+
+    private void UpdateVisibility(bool isVisible) {
+        IsVisible = isVisible;
+        StateHasChanged();
+    }
+
+
+    private string StyleForWindow => IsVisible ? "display: flex" : "display: none";
 }

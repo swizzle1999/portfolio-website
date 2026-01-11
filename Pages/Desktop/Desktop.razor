@@ -24,51 +24,31 @@
     </div>
 </div>
 
-@if (IsTerminalVisible) {
 <div class="d-flex">
-    @* <TerminalWindow /> *@
-    <Terminal Title="Terminal" />
+        <Terminal @ref="terminalWindow" Title="Terminal" />
 </div>
-}
 
-@if (IsFileBrowserVisible) {
 <div class="d-flex">
-    <FileBrowser />
+    <FileBrowser @ref="fileBrowserWindow" Title="File Browser" />
 </div>
-}
 
-@* <Window Title="Test">
-    <Icon OnClickCallback="TerminalClicked" Text="Terminal" ImgSrc="images/terminal.png" />
-</Window> *@
+
 
 @code {
-    private bool IsTerminalVisible { get; set; } = false;
-    private bool IsFileBrowserVisible { get; set; } = false;
-
-    protected override void OnInitialized() {
-        // Subscribe to UI events
-        UIEventService.TerminalCloseRequested += async (object? sender, EventArgs e) => {
-            IsTerminalVisible = false;
-            await InvokeAsync(() => {
-                StateHasChanged();
-            });
-        };
-
-        UIEventService.FileBrowserCloseRequested += async (object? sender, EventArgs e) => {
-            IsFileBrowserVisible = false;
-            await InvokeAsync(() => {
-                StateHasChanged();
-            });
-        };
-
-        base.OnInitialized();
-    }
+    private Terminal? terminalWindow;
+    private FileBrowser? fileBrowserWindow;
 
     private void TerminalClicked() {
-        IsTerminalVisible = !IsTerminalVisible;
+        if (terminalWindow != null) {
+            terminalWindow?.Window?.Toggle();
+        }
     }
 
     private void FileBrowserClicked() {
-        IsFileBrowserVisible = !IsFileBrowserVisible;
+        if (fileBrowserWindow != null)
+        {
+            fileBrowserWindow?.Window?.Toggle();
+        }
+
     }
 }

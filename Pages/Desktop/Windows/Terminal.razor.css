@@ -1,23 +1,4 @@
-﻿.window {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    border: 2px solid #333333;
-    background: #222;
-    color: #cfcfcf;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    border-radius: 6px;
-    width: 70vw;
-    height: 70vh;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    overflow: auto;
-}
-
-.input-line {
+﻿.input-line {
     display: flex;
     align-items: baseline;
     gap: 8px
