@@ -1,9 +1,10 @@
 ﻿@inject IJSRuntime JSRuntime
+@using System.Text
 @using WebsiteWASM.Pages.Desktop.Components;
 @inject WebsiteWASM.Services.UIEventService UIEventService
 @implements IWindow
 
-<div class="window" style="@StyleForWindow">
+<div class="window" style="@StyleForWindow()">
     <div class="row window-title">
         <div class="col">
         </div>
@@ -24,6 +25,12 @@
 @code {
     [Parameter]
     public string? Title { get; set; }
+
+    [Parameter]
+    public int TopPercentage { get; set; } = 50;
+
+    [Parameter]
+    public int LeftPercentage { get; set; } = 50;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -53,6 +60,17 @@
         StateHasChanged();
     }
 
+    // This is fucking disgusting.
+    private string StyleForWindow() {
+        // return IsVisible ? "display: flex" : "display: none";
+        StringBuilder sb = new StringBuilder();
+        sb.Append(IsVisible ? "display: flex" : "display: none");
+        sb.Append(";");
 
-    private string StyleForWindow => IsVisible ? "display: flex" : "display: none";
+        sb.Append($"top: {TopPercentage}%;");
+        sb.Append($"left: {LeftPercentage}%;");
+
+
+        return sb.ToString();
+    }
 }

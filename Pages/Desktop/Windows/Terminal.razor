@@ -21,8 +21,7 @@
                       @ref="commandInput"
                       @bind="inputValue"
                       @bind:event="oninput"
-                      @onkeydown="@KeyPressed"
-                      @onkeyup="@KeyReleased"/>
+                      @onkeydown="@KeyPressed"/>
         </div>
     </div>
 </Window>
@@ -61,15 +60,6 @@
 
     public void Toggle() {
         Window?.Toggle();
-    }
-
-    private void KeyReleased(KeyboardEventArgs e) {
-        if (e.Key == "Enter")
-        {
-            inputValue = string.Empty;
-
-            StateHasChanged();
-        }
     }
 }
 

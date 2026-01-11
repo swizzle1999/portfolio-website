@@ -3,7 +3,7 @@
 @inject WebsiteWASM.Services.UIEventService UIEventService
 @implements IWindow
 
-<Window @ref="Window" Title="@Title">
+<Window @ref="Window" Title="@Title" TopPercentage="40" LeftPercentage="40">
     <div>test</div>
 </Window>
 @code {
@@ -25,10 +25,5 @@
     public void Toggle()
     {
         Window?.Toggle();
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
     }
 }
