@@ -15,7 +15,7 @@
         <div class="input-line">
             <p class="terminal-prefix">@terminalPrefix</p>
 
-            <textarea class="terminal-text"
+            <input class="terminal-text"
                       rows="1"
                       @ref="commandInput"
                       @bind="inputValue"
@@ -63,12 +63,8 @@
             try {
                 if (!commandInputElement) return;
                 // Clear out user input from the text area
-                commandInputElement.value = string;
+                commandInputElement.value = '';
                 commandInputElement.focus();
-                if (commandInputElement.setSelectionRange) {
-                    console.log(commandInputElement);
-                    commandInputElement.setSelectionRange(0, 0);
-                }
 
                 // Scroll terminal to the bottom
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;

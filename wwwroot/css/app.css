@@ -17,6 +17,10 @@ textarea {
     color: green;
 }
 
+input {
+    color: green;
+}
+
 a, .btn-link {
     color: #006bb7;
 }
