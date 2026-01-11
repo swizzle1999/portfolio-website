@@ -7,9 +7,17 @@
 <Window @ref="Window" Title="@Title" TopPercentage="40" LeftPercentage="40">
     <div style="display: flex; gap: 10px">
 
-        @for(var index = 0; index < FileSystemService.RootFolder.GetSubFolders()?.Count; index++)
+        @if (FileSystemService.CurrentFolder?.IsRoot == false){
+            <Icon Folder="FileSystemService.CurrentFolder?.GetParentFolder()" OnClickCallback="IconClicked" Text="..." ImgSrc="images/folder.png" />
+        }
+
+        @for(var index = 0; index < FileSystemService.CurrentFolder?.GetSubFolders()?.Count; index++)
         {
-            <Icon Folder="FileSystemService.RootFolder.GetSubFolders()?[index]" OnClickCallback="IconClicked" Text="@FileSystemService.RootFolder.GetSubFolders()?[index].Name" ImgSrc="images/folder.png" />
+            <Icon Folder="FileSystemService.CurrentFolder?.GetSubFolders()?[index]" OnClickCallback="IconClicked" Text="@FileSystemService.CurrentFolder?.GetSubFolders()?[index].Name" ImgSrc="images/folder.png" />
+        }
+
+        @for (var index = 0; index < FileSystemService.CurrentFolder?.GetFiles()?.Count; index++) {
+            <Icon Text="@FileSystemService.CurrentFolder?.GetFiles()?[index].name" ImgSrc="images/folder.png" />
         }
     </div>
 </Window>
@@ -25,8 +33,8 @@
     }
 
     private void IconClicked(Icon icon) {
-        Console.WriteLine("test");
-        Console.WriteLine(string.Join(", ", icon.Folder?.GetFiles()?.Select(i => i.name)));
+        FileSystemService.NavigateToFolder(icon.Folder);
+        StateHasChanged();
     }
 
     public void Show()

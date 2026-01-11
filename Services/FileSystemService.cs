@@ -2,6 +2,8 @@
     public class FileSystemService {
         public Folder RootFolder { get; set; }
 
+        public Folder? CurrentFolder { get; set; }
+
         public FileSystemService() {
             RootFolder = new Folder("test1", null, new List<Folder> {
                 new Folder("subfolder1", null, null, new List<File> {
@@ -10,6 +12,12 @@
                 }),
                 new Folder("subfolder2", null)
             });
+
+            CurrentFolder = RootFolder;
+        }
+
+        public void NavigateToFolder(Folder? folder) {
+            CurrentFolder = folder;
         }
     }
 
@@ -24,6 +32,10 @@
             this.parentFolder = parentFolder;
             this.subFolders = subFolders;
             this.files = files;
+
+            foreach (var folder in subFolders ?? new List<Folder>()) {
+                folder.parentFolder = this;
+            }
         }
 
         public Folder(Folder parentFolder) {
@@ -42,6 +54,10 @@
             } else {
                 return parentFolder.GetFullPath() + "/" + name;
             }
+        }
+
+        public Folder? GetParentFolder() {
+            return parentFolder;
         }
 
         public void AddSubFolder(Folder folder) {
