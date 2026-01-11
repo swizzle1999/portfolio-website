@@ -1,8 +1,9 @@
 ﻿@inject IJSRuntime JSRuntime
+@using WebsiteWASM.Pages.Desktop.Components;
 @inject WebsiteWASM.Services.UIEventService UIEventService
 
-<div class="window-title container">
-    <div class="row">
+<div class="window">
+    <div class="row window-title">
         <div class="col">
         </div>
 
@@ -14,13 +15,19 @@
             <p @onclick="CloseButtonClicked" class="ms-auto" style="font-weight: bold; padding-right: 10px; cursor: pointer; width: fit-content">X</p>
         </div>
     </div>
+   
+    <div class="row" style="flex-grow: 1">
+        @ChildContent
+    </div>
 </div>
 @code {
     [Parameter]
     public string? Title { get; set; }
 
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
     private void CloseButtonClicked() {
         UIEventService.RequestTerminalClose(this, EventArgs.Empty);
     }
-        
 }

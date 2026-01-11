@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject WebsiteWASM.Services.UIEventService UIEventService
 @using WebsiteWASM.Pages.Desktop.Components;
+@using WebsiteWASM.Pages.Desktop.Windows
 
 <div class="container" style="margin: 0">
     <div class="col-2">
@@ -15,7 +16,7 @@
         <Icon Href="https://www.youtube.com/swizzle1999" Text="YouTube" ImgSrc="images/youtube.png" />
     </div>
     <div class="col-2">
-        <Icon Href="" Text="Files" ImgSrc="images/folder.png" />
+        <Icon OnClickCallback="FileBrowserClicked" Text="Files" ImgSrc="images/folder.png" />
     </div>
 
     <div class="col-2">
@@ -25,16 +26,36 @@
 
 @if (IsTerminalVisible) {
 <div class="d-flex">
-    <TerminalWindow />
+    @* <TerminalWindow /> *@
+    <Terminal Title="Terminal" />
 </div>
 }
 
+@if (IsFileBrowserVisible) {
+<div class="d-flex">
+    <FileBrowser />
+</div>
+}
+
+@* <Window Title="Test">
+    <Icon OnClickCallback="TerminalClicked" Text="Terminal" ImgSrc="images/terminal.png" />
+</Window> *@
+
 @code {
     private bool IsTerminalVisible { get; set; } = false;
+    private bool IsFileBrowserVisible { get; set; } = false;
 
     protected override void OnInitialized() {
+        // Subscribe to UI events
         UIEventService.TerminalCloseRequested += async (object? sender, EventArgs e) => {
             IsTerminalVisible = false;
+            await InvokeAsync(() => {
+                StateHasChanged();
+            });
+        };
+
+        UIEventService.FileBrowserCloseRequested += async (object? sender, EventArgs e) => {
+            IsFileBrowserVisible = false;
             await InvokeAsync(() => {
                 StateHasChanged();
             });
@@ -43,8 +64,11 @@
         base.OnInitialized();
     }
 
-    private void TerminalClicked()
-    {
+    private void TerminalClicked() {
         IsTerminalVisible = !IsTerminalVisible;
+    }
+
+    private void FileBrowserClicked() {
+        IsFileBrowserVisible = !IsFileBrowserVisible;
     }
 }

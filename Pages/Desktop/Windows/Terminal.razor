@@ -1,35 +1,35 @@
 ﻿@inject IJSRuntime JSRuntime
 @using WebsiteWASM.Pages.Desktop.Components;
 
-<div class="window">
-    <!--Window Title-->
-    <WindowTitle Title="Terminal"/>
-
+<Window Title="@Title">
     <!--Terminal Text-->
     <div style="display: flex; flex-direction: column; height: 100%">
         <div style="flex-grow: 1">
-            <textarea 
-                @ref="terminalOutput"
-                class="terminal-text"
-                @bind="terminalText"
-                disabled="disabled"
-                style="margin-bottom: 0"/>
+            <textarea @ref="terminalOutput"
+                      class="terminal-text"
+                      @bind="terminalText"
+                      disabled="disabled"
+                      style="margin-bottom: 0" />
         </div>
 
         <div class="input-line">
             <p class="terminal-prefix">@terminalPrefix</p>
 
-            <textarea
-                class="terminal-text"
-                rows="1"
-                @ref="commandInput"
-                @bind="inputValue"
-                @bind:event="oninput"
-                @onkeydown="@InputChanged"/>
+            <textarea class="terminal-text"
+                      rows="1"
+                      @ref="commandInput"
+                      @bind="inputValue"
+                      @bind:event="oninput"
+                      @onkeydown="@KeyPressed"
+                      @onkeyup="@KeyReleased"/>
         </div>
     </div>
-</div>
+</Window>
+
 @code {
+    [Parameter]
+    public string? Title { get; set; }
+
     private string terminalPrefix = "admin@swizz-server: $ ";
     private string inputValue { get; set; } = string.Empty;
     private string terminalText { get; set; } = string.Empty;
@@ -37,11 +37,19 @@
     private ElementReference commandInput;
     private ElementReference terminalOutput;
 
-    private async Task InputChanged(KeyboardEventArgs e) {
-        if (e.Key == "Enter")
-        {
+    private async Task KeyPressed(KeyboardEventArgs e) {
+        if (e.Key == "Enter") {
             terminalText += terminalPrefix + inputValue.Replace("\n", "") + "\n";
             await JSRuntime.InvokeVoidAsync("terminalInterop.clearAndFocus", commandInput, terminalOutput);
+            inputValue = string.Empty;
+
+            StateHasChanged();
+        }
+    }
+
+    private void KeyReleased(KeyboardEventArgs e) {
+        if (e.Key == "Enter")
+        {
             inputValue = string.Empty;
 
             StateHasChanged();
@@ -54,12 +62,15 @@
         clearAndFocus: function (commandInputElement, terminalOutput) {
             try {
                 if (!commandInputElement) return;
-                commandInputElement.value = '';
+                // Clear out user input from the text area
+                commandInputElement.value = string;
                 commandInputElement.focus();
                 if (commandInputElement.setSelectionRange) {
+                    console.log(commandInputElement);
                     commandInputElement.setSelectionRange(0, 0);
                 }
 
+                // Scroll terminal to the bottom
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
             } catch (e) {
                 console.error(e);
