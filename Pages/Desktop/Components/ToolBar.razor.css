@@ -1,0 +1,17 @@
+﻿.row {
+    margin: 0;
+    padding: 0;
+}
+
+.tool-bar {
+    display: flex;
+    background: #222;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}

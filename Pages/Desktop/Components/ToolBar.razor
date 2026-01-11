@@ -1,0 +1,32 @@
+﻿<div class="d-flex justify-content-between tool-bar">
+    <div>
+        
+    </div>
+
+    <div>
+        <p>Swizz OS</p>
+    </div>
+
+    <div class="d-flex flex-column" style="text-align: center">
+        <p>@time</p>
+        <p>@date</p>
+    </div>
+</div>
+@code {
+    private Timer? clock;
+    private string? time;
+    private string? date;
+
+    protected override void OnInitialized()
+    {
+        clock = new Timer(TimerTick, null, 0, 1000);
+    }
+
+    private void TimerTick(object? state)
+    {
+        time = DateTime.Now.ToShortTimeString();
+        date = DateTime.Now.ToShortDateString();
+
+        StateHasChanged();
+    }
+}

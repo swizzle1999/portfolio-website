@@ -3,24 +3,32 @@
 @using WebsiteWASM.Pages.Desktop.Components;
 @using WebsiteWASM.Pages.Desktop.Windows
 
-<div class="container" style="margin: 0">
-    <div class="col-2">
-        <Icon Href="https://github.com/swizzle1999" Text="Github" ImgSrc="images/github.png" />
+<div class="container" style="margin: 0; max-width: none">
+    @* Tool Bar *@
+    <div class="row">
+        <ToolBar />
     </div>
 
-    <div class="col-2">
-        <Icon Href="" Text="LinkedIn" ImgSrc="images/linkedin.png" />
-    </div>
+    <div>
+    @* Desktop icons *@
+        <div class="col-2">
+            <Icon Href="https://github.com/swizzle1999" Text="Github" ImgSrc="images/github.png" />
+        </div>
 
-    <div class="col-2">
-        <Icon Href="https://www.youtube.com/swizzle1999" Text="YouTube" ImgSrc="images/youtube.png" />
-    </div>
-    <div class="col-2">
-        <Icon OnClickCallback="FileBrowserClicked" Text="Files" ImgSrc="images/folder.png" />
-    </div>
+        <div class="col-2">
+            <Icon Href="" Text="LinkedIn" ImgSrc="images/linkedin.png" />
+        </div>
 
-    <div class="col-2">
-        <Icon OnClickCallback="TerminalClicked" Text="Terminal" ImgSrc="images/terminal.png" />
+        <div class="col-2">
+            <Icon Href="https://www.youtube.com/swizzle1999" Text="YouTube" ImgSrc="images/youtube.png" />
+        </div>
+        <div class="col-2">
+            <Icon OnClickCallback="FileBrowserClicked" Text="Files" ImgSrc="images/folder.png" />
+        </div>
+
+        <div class="col-2">
+            <Icon OnClickCallback="TerminalClicked" Text="Terminal" ImgSrc="images/terminal.png" />
+        </div>
     </div>
 </div>
 
