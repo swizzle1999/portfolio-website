@@ -1,22 +1,28 @@
 ﻿@inject IJSRuntime JSRuntime
 @using WebsiteWASM.Pages.Desktop.Components;
-@inject WebsiteWASM.Services.UIEventService UIEventService
+@using WebsiteWASM.Services
+@inject WebsiteWASM.Services.FileSystemService FileSystemService;
 @implements IWindow
 
 <Window @ref="Window" Title="@Title" TopPercentage="40" LeftPercentage="40">
-    <div style="display: flex; gap: 10px">
-        <Icon Text="Files" ImgSrc="images/folder.png" />
-        <Icon Text="Files" ImgSrc="images/folder.png" />
-        <Icon Text="Files" ImgSrc="images/folder.png" />
-        <Icon Text="Files" ImgSrc="images/folder.png" />
-        <Icon Text="Files" ImgSrc="images/folder.png" />
-    </div>
+    @* <div style="display: flex; gap: 10px">
+
+        @for(var folder = 0; folder < Folders.Count; folder++)
+        {
+            <Icon Text="@Folders[folder].Name" ImgSrc="images/folder.png" />
+        }
+    </div> *@
 </Window>
 @code {
     [Parameter]
     public string? Title { get; set; }
 
     public IWindow? Window { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 
     public void Show()
     {
