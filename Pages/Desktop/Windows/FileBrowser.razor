@@ -5,13 +5,13 @@
 @implements IWindow
 
 <Window @ref="Window" Title="@Title" TopPercentage="40" LeftPercentage="40">
-    @* <div style="display: flex; gap: 10px">
+    <div style="display: flex; gap: 10px">
 
-        @for(var folder = 0; folder < Folders.Count; folder++)
+        @for(var index = 0; index < FileSystemService.RootFolder.GetSubFolders()?.Count; index++)
         {
-            <Icon Text="@Folders[folder].Name" ImgSrc="images/folder.png" />
+            <Icon Folder="FileSystemService.RootFolder.GetSubFolders()?[index]" OnClickCallback="IconClicked" Text="@FileSystemService.RootFolder.GetSubFolders()?[index].Name" ImgSrc="images/folder.png" />
         }
-    </div> *@
+    </div>
 </Window>
 @code {
     [Parameter]
@@ -22,6 +22,11 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+    }
+
+    private void IconClicked(Icon icon) {
+        Console.WriteLine("test");
+        Console.WriteLine(string.Join(", ", icon.Folder?.GetFiles()?.Select(i => i.name)));
     }
 
     public void Show()

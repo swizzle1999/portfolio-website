@@ -1,19 +1,15 @@
 ﻿namespace WebsiteWASM.Services {
     public class FileSystemService {
-        private Folder rootFolder;
+        public Folder RootFolder { get; set; }
 
         public FileSystemService() {
-            rootFolder = new Folder("test1", null, new List<Folder> {
+            RootFolder = new Folder("test1", null, new List<Folder> {
                 new Folder("subfolder1", null, null, new List<File> {
-                    new File("This is some test data in file1.txt"),
-                    new File("This is some test data in file2.txt")
+                    new File("file1.txt", "This is some test data in file1.txt"),
+                    new File("file2.txt", "This is some test data in file2.txt")
                 }),
                 new Folder("subfolder2", null)
             });
-        }
-
-        public Folder GetRootFolder() {
-            return rootFolder;
         }
     }
 
@@ -37,6 +33,8 @@
         public string Name {
             get { return name; }
         }
+
+        public bool IsRoot => parentFolder == null;
 
         public string GetFullPath() {
             if (parentFolder == null) {
@@ -64,9 +62,12 @@
     }
 
     public class File {
+        // theses two fields are public for simplicity, but should be properties in a real implementation 
+        public string name;
         public string data;
 
-        public File(string data) {
+        public File(string name, string data) {
+            this.name = name;
             this.data = data;
         }
     }

@@ -1,4 +1,5 @@
-﻿<a @onclick="ButtonClicked" class="icon" href="@Href" target="_blank">
+﻿@using WebsiteWASM.Services
+<a @onclick="ButtonClicked" class="icon" href="@Href" target="_blank">
     <img class="icon-img" src="@ImgSrc" />
     <p style="text-align: center">@Text</p>
 </a>
@@ -10,7 +11,7 @@
     public string? Text { get; set; }
 
     [Parameter]
-    public EventCallback OnClickCallback { get; set; }
+    public EventCallback<Icon> OnClickCallback { get; set; }
 
     [Parameter, EditorRequired]
     public string ImgSrc { get; set; 
@@ -19,9 +20,12 @@
     [Parameter]
     public string? ImgSize { get; set; }
 
+    [Parameter]
+    public Folder? Folder { get; set; }
+
     private string? ImgStyle => string.IsNullOrWhiteSpace(ImgSize) ? null : $"width:{ImgSize};height:auto;";
 
     private void ButtonClicked() {
-        OnClickCallback.InvokeAsync();
+        OnClickCallback.InvokeAsync(this);
     }
 }
