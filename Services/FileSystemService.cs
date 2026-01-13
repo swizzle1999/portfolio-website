@@ -21,7 +21,7 @@
         }
     }
 
-    public class Folder {
+    public class Folder : IFileSystemItem {
         private Folder? parentFolder;
         private List<Folder>? subFolders = new();
         private List<File>? files = new();
@@ -77,7 +77,7 @@
         }
     }
 
-    public class File {
+    public class File : IFileSystemItem{
         // theses two fields are public for simplicity, but should be properties in a real implementation 
         public string name;
         public string data;
@@ -86,5 +86,11 @@
             this.name = name;
             this.data = data;
         }
+
+        public string Name => name;
+    }
+
+    public interface IFileSystemItem {
+        public string Name { get; }
     }
 }

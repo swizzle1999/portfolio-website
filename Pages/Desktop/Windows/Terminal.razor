@@ -1,5 +1,7 @@
 ﻿@inject IJSRuntime JSRuntime
+@inject CommandParserService CommandParserService
 @using WebsiteWASM.Pages.Desktop.Components;
+@using WebsiteWASM.Services
 @implements IWindow
 
 <Window @ref="Window" Title="@Title">
@@ -42,12 +44,28 @@
 
     private async Task KeyPressed(KeyboardEventArgs e) {
         if (e.Key == "Enter") {
-            terminalText += terminalPrefix + inputValue.Replace("\n", "") + "\n";
+            // Log the command to the terminal and clear input
+            PrintToTerminal(inputValue);
             await JSRuntime.InvokeVoidAsync("terminalInterop.clearAndFocus", commandInput, terminalOutput);
+
+            // Process the command
+            string result = CommandParserService.ParseCommand(inputValue);
+
+            if (result != string.Empty) {
+                // Print the result to the terminal
+                PrintToTerminal(result);
+            }
+
+            // Clear input value
             inputValue = string.Empty;
 
             StateHasChanged();
         }
+    }
+
+    private void PrintToTerminal(string text) {
+        terminalText += terminalPrefix + text.Replace("\n", "") + "\n";
+        StateHasChanged();
     }
 
     public void Show() {
