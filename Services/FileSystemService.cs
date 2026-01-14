@@ -5,7 +5,7 @@
         public Folder? CurrentFolder { get; set; }
 
         public FileSystemService() {
-            RootFolder = new Folder("test1", null, new List<Folder> {
+            RootFolder = new Folder("", null, new List<Folder> {
                 new Folder("subfolder1", null, null, new List<File> {
                     new File("file1.txt", "This is some test data in file1.txt"),
                     new File("file2.txt", "This is some test data in file2.txt")
@@ -18,6 +18,25 @@
 
         public void NavigateToFolder(Folder? folder) {
             CurrentFolder = folder;
+        }
+
+        public void NavigateToFolder(string folderName) {
+            foreach (var folder in CurrentFolder?.GetSubFolders() ?? new List<Folder>()) {
+                if (folder.Name == folderName) {
+                    CurrentFolder = folder;
+                    return;
+                }
+            }
+        }
+
+        public string GetCurrentFolderPath() {
+            return CurrentFolder?.GetFullPath() ?? string.Empty;
+        }
+
+        public void NavigateToParentFolder() {
+            if (CurrentFolder != null && !CurrentFolder.IsRoot) {
+                CurrentFolder = CurrentFolder.GetParentFolder();
+            }
         }
     }
 

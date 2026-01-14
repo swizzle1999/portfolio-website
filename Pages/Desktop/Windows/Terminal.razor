@@ -1,5 +1,6 @@
 ﻿@inject IJSRuntime JSRuntime
 @inject CommandParserService CommandParserService
+@inject FileSystemService FileSystemService
 @using WebsiteWASM.Pages.Desktop.Components;
 @using WebsiteWASM.Services
 @implements IWindow
@@ -34,7 +35,7 @@
 
     public IWindow? Window { get; set; }
 
-    private string terminalPrefix = "admin@swizz-server: $ ";
+    private string terminalPrefix => "admin@swizz-server: " + FileSystemService.CurrentFolder?.GetFullPath() + "$ ";
     private string inputValue { get; set; } = string.Empty;
     private string terminalText { get; set; } = string.Empty;
 

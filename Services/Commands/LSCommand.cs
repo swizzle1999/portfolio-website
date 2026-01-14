@@ -3,10 +3,11 @@ using System.Text;
 
 namespace WebsiteWASM.Services.Commands {
     public class LSCommand : ICommand {
-        [Inject]
         private FileSystemService FileSystemService { get; set; }
 
         public string Name { get; set; } = "ls";
+        public string HelpText { get; set; } = "List the contents of the current directory.";
+
         public List<Parameter> Parameters { get; set; } = new List<Parameter>();
 
         public LSCommand(FileSystemService fileSystemService) {
