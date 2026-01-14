@@ -2,12 +2,12 @@
 
 namespace WebsiteWASM.Services {
     public class CommandParserService {
-        public List<ICommand> ValidCommands = new List<ICommand> {
-            new HelpCommand(),
-            new LSCommand()
-        };
+        public List<ICommand> ValidCommands = new List<ICommand>();
 
-        public CommandParserService() { }
+        public CommandParserService(FileSystemService fileSystemService) {
+            ValidCommands.Add(new HelpCommand());
+            ValidCommands.Add(new LSCommand(fileSystemService));
+        }
 
         public string ParseCommand(string command) {
             var tokens = command.Split(' ').ToList();
